@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <bytecodeTargetLevel target="11" />
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="napt.napt-javac" options="--add-exports jdk.compiler/com.sun.tools.javac.main=com.slapin.napt --add-exports jdk.compiler/com.sun.tools.javac.util=com.slapin.napt --add-exports jdk.compiler/com.sun.tools.javac.api=com.slapin.napt" />
+    </option>
+  </component>
+</project>
