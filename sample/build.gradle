@@ -1,7 +1,7 @@
 plugins {
     id("com.android.application")
     id("kotlin-android")
-    id("com.slapin.napt")
+    id("com.sergei-lapin.napt")
 }
 
 napt {
