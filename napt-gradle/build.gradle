@@ -1,0 +1,28 @@
+plugins {
+    id("org.jetbrains.kotlin.jvm")
+    id("java-gradle-plugin")
+}
+
+apply from: "../buildscript/dependencies.gradle"
+
+repositories {
+    mavenCentral()
+    gradlePluginPortal()
+}
+
+group = properties["lib.group"]
+version = properties["lib.version"]
+
+dependencies {
+    implementation(deps.gradle.kotlin)
+    implementation(gradleApi())
+}
+
+gradlePlugin {
+    plugins.create("napt") {
+        id = group.toString()
+        displayName = "NAPT"
+        description = "The Gradle Plugin for enabling NAPT javac plugin"
+        implementationClass = "com.slapin.napt.NaptGradlePlugin"
+    }
+}
