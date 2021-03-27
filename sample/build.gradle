@@ -50,6 +50,6 @@ dependencies {
     implementation(deps.google.material)
     implementation(deps.google.dagger)
 
-    annotationProcessor(project(":napt-javac"))
+    annotationProcessor(deps.napt.javac)
     annotationProcessor(deps.google.daggerCompiler)
 }

@@ -15,6 +15,6 @@ ext.deps = [
                 daggerCompiler: "com.google.dagger:dagger-compiler:2.33"
         ],
         napt: [
-                javac: "com.github.sergei-lapin.napt:napt-javac:1.2"
+                javac: "com.github.sergei-lapin:napt:1.3"
         ]
 ]
