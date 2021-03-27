@@ -1,6 +1,11 @@
 plugins {
     id("com.android.application")
     id("kotlin-android")
+    id("com.slapin.napt")
+}
+
+napt {
+    naptTriggerPackagePrefix.set("com.slapin.napt")
 }
 
 android {
@@ -43,4 +48,8 @@ dependencies {
     implementation(deps.androidx.constraintLayout)
 
     implementation(deps.google.material)
+    implementation(deps.google.dagger)
+
+    annotationProcessor(project(":napt-javac"))
+    annotationProcessor(deps.google.daggerCompiler)
 }
