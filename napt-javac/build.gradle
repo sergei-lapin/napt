@@ -13,9 +13,4 @@ tasks.withType(JavaCompile) {
     options.forkOptions.executable = "javac"
 }
 
-jar {
-    dependsOn(configurations.compileClasspath)
-    from(sourceSets.main.output)
-}
-
 apply from: "../buildscript/java-publishing.gradle"
