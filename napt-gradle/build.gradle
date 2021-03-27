@@ -1,5 +1,6 @@
 plugins {
     id("org.jetbrains.kotlin.jvm")
+    id("com.gradle.plugin-publish") version "0.13.0"
     id("java-gradle-plugin")
 }
 
@@ -25,4 +26,11 @@ gradlePlugin {
         description = "The Gradle Plugin for enabling NAPT javac plugin"
         implementationClass = "com.slapin.napt.NaptGradlePlugin"
     }
+}
+
+pluginBundle {
+    website = "https://github.com/sergei-lapin/napt"
+    vcsUrl = "https://github.com/sergei-lapin/napt.git"
+    tags = ["kotlin", "java", "apt", "kapt", "gradle", "plugin"]
+    description = "Plugin that enables the work of NAPT javac plugin. Please refer to the https://github.com/sergei-lapin/napt/blob/main/README.md"
 }
