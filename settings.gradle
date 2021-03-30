@@ -3,4 +3,4 @@ rootProject.name = "napt"
 include(":sample")
 include(":napt-javac")
 
-// includeBuild("napt-gradle")
+includeBuild("napt-gradle")

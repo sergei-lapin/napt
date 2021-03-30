@@ -10,11 +10,11 @@ ext.deps = [
                 constraintLayout: "androidx.constraintlayout:constraintlayout:2.0.4"
         ],
         google  : [
-                material: "com.google.android.material:material:1.3.0",
-                dagger: "com.google.dagger:dagger:2.33",
+                material      : "com.google.android.material:material:1.3.0",
+                dagger        : "com.google.dagger:dagger:2.33",
                 daggerCompiler: "com.google.dagger:dagger-compiler:2.33"
         ],
-        napt: [
+        napt    : [
                 javac: "com.github.sergei-lapin:napt:1.3"
         ]
 ]

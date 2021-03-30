@@ -2,9 +2,9 @@ package com.slapin.napt.sample
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import dagger.BindsInstance
 import dagger.Component
 
