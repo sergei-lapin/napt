@@ -47,28 +47,6 @@ dependencies {
 }
 ```
 
-#### Ignore NaptTrigger
-
-Add `NaptTrigger.java` to root .gitignore
-
-#### Conflitcting NaptTrigger classes
-
-By default Gradle plugin will generate NaptTrigger with module-named package so the FQ names won't clash, but, just in case, the prefix of NaptTrigger package can be specified like that:
-
-``` Gradle
-napt {
-    naptTriggerPackagePrefix.set("com.slapin.napt")
-}
-```
-
-Assume we're in module named `sample`, will result in the following `NaptTrigger.java`:
-
-``` Java
-package com.slapin.napt.sample;
-class NaptTrigger {
-}
-```
-
 ## Dev mode
 
 - Uncomment `includeBuild("napt-gradle")` in root `settings.gradle`
