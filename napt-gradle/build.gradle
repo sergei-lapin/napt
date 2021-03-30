@@ -32,5 +32,5 @@ pluginBundle {
     website = "https://github.com/sergei-lapin/napt"
     vcsUrl = "https://github.com/sergei-lapin/napt.git"
     tags = ["kotlin", "java", "apt", "kapt", "gradle", "plugin"]
-    description = "Plugin that enables the work of NAPT javac plugin. Please refer to the https://github.com/sergei-lapin/napt/blob/main/README.md"
+    description = "Plugin that enables the work of NAPT javac plugin"
 }
