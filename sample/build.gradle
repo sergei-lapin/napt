@@ -4,6 +4,10 @@ plugins {
     id("com.sergei-lapin.napt")
 }
 
+napt {
+    naptTriggerPackagePrefix = "com.slapin.napt"
+}
+
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.3"
@@ -46,6 +50,5 @@ dependencies {
     implementation(deps.google.material)
     implementation(deps.google.dagger)
 
-    annotationProcessor(deps.napt.javac)
     annotationProcessor(deps.google.daggerCompiler)
 }
