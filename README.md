@@ -1,6 +1,6 @@
 # NAPT
 
-[![](https://jitpack.io/v/sergei-lapin/napt.svg)](https://jitpack.io/#sergei-lapin/napt)
+[![Plugin](https://img.shields.io/badge/gradle%20plugin-v1.7-blue)](https://plugins.gradle.org/plugin/com.sergei-lapin.napt)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ## What is it?
