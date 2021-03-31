@@ -8,7 +8,7 @@ import org.gradle.api.tasks.Delete
 import org.gradle.api.tasks.compile.JavaCompile
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-private const val COMPILER_PLUGIN = "com.github.sergei-lapin:napt:1.6"
+private const val COMPILER_PLUGIN = "com.github.sergei-lapin:napt:1.5"
 private const val ANNOTATION_PROCESSOR_CONFIGURATION = "annotationProcessor"
 
 class NaptGradlePlugin : Plugin<Project> {

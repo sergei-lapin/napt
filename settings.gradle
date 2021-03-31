@@ -1,6 +1,6 @@
 pluginManagement {
     plugins {
-        id "com.sergei-lapin.napt" version "1.6"
+        id "com.sergei-lapin.napt" version "1.7"
     }
 }
 
