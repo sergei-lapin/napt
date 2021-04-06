@@ -11,6 +11,36 @@ An alternative to KAPT that skips stub generation and hence runs up to 50% faste
 
 *JDK 9+ is required to run this particular set of tools*
 
+Once applied, you cant reference generated code in Kotlin code anymore, so you'd have to write Java `bridge` classes in order to reference Java generated code in  Kotlin sources.
+
+For example, assume we have following Kotlin Dagger 2 Component:
+
+``` Kotlin
+@Component
+interface Component {
+    
+    @Component.Factory
+    interface Factory {
+        
+        fun create(): Component
+    }
+}
+```
+
+then, in order to reference the generated component from Kotlin code we have to write Java `bridge` that would look like this:
+
+``` Java
+
+class ComponentBridge {
+    
+    static Component.Factory factory() {
+        return DaggerComponent.factory();
+    }
+}
+```
+
+That's it, now you can easily reference this `bridge` from your Kotlin code wherever you'd like to
+
 ## Sample
 
 You could see an example of usage in [sample](https://github.com/sergei-lapin/napt/blob/main/sample/build.gradle)
@@ -35,13 +65,41 @@ subprojects {
 }
 ```
 
-#### Add plugin:
+#### Add plugin
+
+Remove your old
+
+``` Gradle 
+plugins {
+    kotlin("kapt")
+}
+```
+
+and replace it with
 
 ``` Gradle
 plugins {
     id("com.sergei-lapin.napt") version("{latest-version}")
 }
 ```
+
+then you can replace all of your 
+
+``` Gradle
+dependencies {
+    kapt("some dependency")
+}
+```
+
+with
+
+``` Gradle
+dependencies {
+    annotationProcessor("some dependency")
+}
+```
+
+That's it. Enjoy speed the speed up of your annotation processing by ~50%.
 
 #### Ignore NaptTrigger
 
