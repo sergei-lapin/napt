@@ -25,10 +25,15 @@ open class CreateNaptTrigger @Inject constructor(
     fun run() {
         val packagePrefix = packagePrefix.orNull?.let { "$it." } ?: ""
         val triggerCode = """
-                        package ${packagePrefix}${target.name};
+                        package ${getPackageName(packagePrefix, target)};
                         class NaptTrigger {
                         }
                     """.trimIndent()
         output.writeText(triggerCode)
+    }
+
+    private fun getPackageName(packagePrefix: String, project: Project): String {
+        val projectName = project.name.replace("-", "_")
+        return "${packagePrefix}${projectName}"
     }
 }
