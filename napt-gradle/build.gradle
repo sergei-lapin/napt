@@ -1,6 +1,6 @@
 plugins {
     id("org.jetbrains.kotlin.jvm")
-    id("com.gradle.plugin-publish") version "0.13.0"
+    id("com.gradle.plugin-publish") version "0.14.0"
     id("java-gradle-plugin")
 }
 
@@ -13,6 +13,12 @@ repositories {
 
 group = properties["lib.group"]
 version = properties["lib.version"]
+
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(9))
+    }
+}
 
 dependencies {
     implementation(deps.gradle.kotlin)

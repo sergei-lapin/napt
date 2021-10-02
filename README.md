@@ -1,6 +1,6 @@
 # NAPT
 
-[![Plugin](https://img.shields.io/badge/gradle%20plugin-v1.7-blue)](https://plugins.gradle.org/plugin/com.sergei-lapin.napt)
+[![Plugin](https://img.shields.io/badge/gradle%20plugin-v1.8-blue)](https://plugins.gradle.org/plugin/com.sergei-lapin.napt)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ## What is it?
@@ -30,7 +30,6 @@ interface Component {
 then, in order to reference the generated component from Kotlin code we have to write Java `bridge` that would look like this:
 
 ``` Java
-
 class ComponentBridge {
     
     static Component.Factory factory() {
@@ -122,8 +121,3 @@ package com.slapin.napt.sample;
 class NaptTrigger {
 }
 ```
-
-## Dev mode
-
-- Uncomment `includeBuild("napt-gradle")` in root `settings.gradle`
-- Run Gradle sync

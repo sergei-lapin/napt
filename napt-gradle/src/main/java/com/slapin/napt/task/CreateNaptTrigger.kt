@@ -8,7 +8,6 @@ import org.gradle.api.tasks.*
 import java.io.File
 import javax.inject.Inject
 
-@CacheableTask
 open class CreateNaptTrigger @Inject constructor(
     private val target: Project,
     @get:Input @get:Optional val packagePrefix: Property<String>

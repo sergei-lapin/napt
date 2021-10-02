@@ -1,6 +1,6 @@
 pluginManagement {
     plugins {
-        id "com.sergei-lapin.napt" version "1.7"
+        id "com.sergei-lapin.napt" version "1.8"
     }
 }
 
@@ -9,4 +9,4 @@ rootProject.name = "napt"
 include(":sample")
 include(":napt-javac")
 
-// includeBuild("napt-gradle")
+includeBuild("napt-gradle")
