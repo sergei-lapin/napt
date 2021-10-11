@@ -32,9 +32,7 @@ class NaptGradlePlugin : Plugin<Project> {
 
     private fun notifyJavaCompilerAboutPlugin(target: Project) {
         target.tasks.withType(JavaCompile::class.java).configureEach { javaCompile ->
-            javaCompile.doFirst {
-                javaCompile.options.compilerArgs.add("-Xplugin:Napt")
-            }
+            javaCompile.options.compilerArgs.add("-Xplugin:Napt")
         }
     }
 
