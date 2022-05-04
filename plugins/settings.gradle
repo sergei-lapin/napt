@@ -1,0 +1,8 @@
+pluginManagement {
+    plugins {
+        id "org.jetbrains.kotlin.jvm" version "1.6.10"
+    }
+}
+
+include(":gradle")
+include(":javac")

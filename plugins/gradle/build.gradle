@@ -4,15 +4,15 @@ plugins {
     id("java-gradle-plugin")
 }
 
-apply from: "../buildscript/dependencies.gradle"
+apply from: "../../buildscript/dependencies.gradle"
 
 repositories {
     mavenCentral()
     gradlePluginPortal()
 }
 
-group = properties["lib.group"]
-version = properties["lib.version"]
+group = "com.sergei-lapin.napt"
+version = "1.11"
 
 java {
     toolchain {

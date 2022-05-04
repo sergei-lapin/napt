@@ -7,23 +7,26 @@
         <compositeConfiguration>
           <compositeBuild compositeDefinitionSource="SCRIPT">
             <builds>
-              <build path="$PROJECT_DIR$/napt-gradle" name="napt-gradle">
+              <build path="$PROJECT_DIR$/plugins" name="plugins">
                 <projects>
-                  <project path="$PROJECT_DIR$/napt-gradle" />
+                  <project path="$PROJECT_DIR$/plugins" />
+                  <project path="$PROJECT_DIR$/plugins/gradle" />
+                  <project path="$PROJECT_DIR$/plugins/javac" />
                 </projects>
               </build>
             </builds>
           </compositeBuild>
         </compositeConfiguration>
-        <option name="testRunner" value="PLATFORM" />
+        <option name="testRunner" value="GRADLE" />
         <option name="distributionType" value="DEFAULT_WRAPPED" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="gradleJvm" value="11" />
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/napt-gradle" />
-            <option value="$PROJECT_DIR$/napt-javac" />
+            <option value="$PROJECT_DIR$/plugins" />
+            <option value="$PROJECT_DIR$/plugins/gradle" />
+            <option value="$PROJECT_DIR$/plugins/javac" />
             <option value="$PROJECT_DIR$/sample" />
           </set>
         </option>
