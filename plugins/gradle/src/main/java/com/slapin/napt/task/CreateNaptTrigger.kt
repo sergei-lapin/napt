@@ -13,13 +13,13 @@ abstract class CreateNaptTrigger : DefaultTask() {
 
     @get:InputDirectory
     @get:PathSensitive(PathSensitivity.RELATIVE)
-    abstract val javaDirectory: DirectoryProperty
+    abstract val mainSourceSetDir: DirectoryProperty
 
     @get:Input @get:Optional abstract val packagePrefix: Property<String>
 
     @get:OutputFile
     val output: Provider<RegularFile>
-        get() = javaDirectory.map { directory -> directory.file("NaptTrigger.java") }
+        get() = mainSourceSetDir.file("java/NaptTrigger.java")
 
     @TaskAction
     fun run() {

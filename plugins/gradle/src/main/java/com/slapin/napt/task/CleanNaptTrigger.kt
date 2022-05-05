@@ -11,11 +11,11 @@ abstract class CleanNaptTrigger : DefaultTask() {
 
     @get:InputDirectory
     @get:PathSensitive(PathSensitivity.RELATIVE)
-    abstract val javaDirectory: DirectoryProperty
+    abstract val mainSourceSetDir: DirectoryProperty
 
     @TaskAction
     fun run() {
-        val trigger = javaDirectory.get().file("NaptTrigger.java").asFile
+        val trigger = mainSourceSetDir.file("java/NaptTrigger.java").get().asFile
         didWork = trigger.exists()
         if (trigger.exists()) trigger.delete()
     }

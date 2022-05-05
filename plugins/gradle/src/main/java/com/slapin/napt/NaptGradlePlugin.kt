@@ -33,12 +33,13 @@ class NaptGradlePlugin : Plugin<Project> {
     }
 
     private fun Project.bindTriggerCreation(extension: NaptGradleExtension) {
+
         val createTrigger =
             tasks.register(
                 "createNaptTrigger",
                 CreateNaptTrigger::class.java,
             ) { task ->
-                task.javaDirectory.set(layout.projectDirectory.dir("src/main/java"))
+                task.mainSourceSetDir.set(layout.projectDirectory.dir("src/main"))
                 task.projectName.set(name)
                 task.packagePrefix.set(extension.naptTriggerPackagePrefix)
                 task.group = "napt"
@@ -60,7 +61,7 @@ class NaptGradlePlugin : Plugin<Project> {
                 "cleanNaptTrigger",
                 CleanNaptTrigger::class.java,
             ) { task ->
-                task.javaDirectory.set(layout.projectDirectory.dir("src/main/java"))
+                task.mainSourceSetDir.set(layout.projectDirectory.dir("src/main"))
                 task.group = "napt"
                 task.description = "Removes NaptTrigger.java if present"
             }
