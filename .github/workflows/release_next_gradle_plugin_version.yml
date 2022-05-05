@@ -4,15 +4,16 @@ on:
   workflow_dispatch:
 
 jobs:
-  publish:
+  publish-gradle-plugin:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
 
       #Run JDK configuration
       - name: Set up JDK 9
-        uses: actions/setup-java@v2
+        uses: actions/setup-java@v3
         with:
+          distribution: 'zulu'
           java-version: 9
 
       #Set up Gradle
