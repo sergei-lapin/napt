@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "io.github.sergei-lapin.napt"
-version = "1.0-SNAPSHOT"
+version = "1.0"
 
 ext.isRelease = !version.endsWith("SNAPSHOT")
 
