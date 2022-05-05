@@ -1,6 +1,6 @@
 # NAPT
 
-[![Plugin](https://img.shields.io/badge/gradle%20plugin-v1.10-blue)](https://plugins.gradle.org/plugin/com.sergei-lapin.napt)
+[![Plugin](https://img.shields.io/badge/gradle%20plugin-v1.11-blue)](https://plugins.gradle.org/plugin/com.sergei-lapin.napt)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ## What is it?
@@ -45,24 +45,8 @@ That's it, now you can easily reference this `bridge` from your Kotlin code wher
 You could see an example of usage in [sample](https://github.com/sergei-lapin/napt/blob/main/sample/build.gradle)
 
 ## Download
-- javac plugin is distributed through JitPack
+- javac plugin is distributed through Maven Central
 - Gradle plugin is distributed through Gradle Plugin Portal
-
-#### Add to the root build.gradle
-
-``` Gradle
-buildscript {
-    repositories {
-        gradlePluginPortal()
-    }
-}
-
-subprojects {
-    repositories {
-        maven { url("https://jitpack.io") }
-    }
-}
-```
 
 #### Add plugin
 
