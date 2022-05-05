@@ -1,0 +1,86 @@
+plugins {
+    id("java")
+    id("maven-publish")
+    id("signing")
+}
+
+group = "io.github.sergei-lapin.napt"
+version = "1.0-SNAPSHOT"
+
+ext.isRelease = !version.endsWith("SNAPSHOT")
+
+tasks.withType(JavaCompile) {
+    sourceCompatibility = JavaVersion.VERSION_1_9.toString()
+    targetCompatibility = JavaVersion.VERSION_1_9.toString()
+    modularity.inferModulePath.set(true)
+    options.compilerArgs = [
+            "--add-exports", "jdk.compiler/com.sun.tools.javac.util=com.slapin.napt",
+            "--add-exports", "jdk.compiler/com.sun.tools.javac.api=com.slapin.napt",
+            "--add-exports", "jdk.compiler/com.sun.tools.javac.main=com.slapin.napt"
+    ]
+    options.fork = true
+    options.forkOptions.executable = "javac"
+}
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+    archiveClassifier.set("sources")
+    from sourceSets.main.allSource
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            maven(MavenPublication) {
+                setVersion(project.version)
+                setGroupId(project.group)
+                setArtifactId(project.name)
+                from(components.java)
+                artifact(sourcesJar)
+
+                pom {
+                    name = "Napt JavaC Plugin"
+                    description = "Enable Java APT for Kotlin without kapt"
+                    url = "https://github.com/sergei-lapin/napt"
+
+                    licenses {
+                        license {
+                            name = "MIT License"
+                            url = "https://opensource.org/licenses/MIT"
+                        }
+                    }
+
+                    developers {
+                        developer {
+                            id = "sergei-lapin"
+                            name = "Sergei Lapin"
+                            email = "macmeprag@gmail.com"
+                        }
+                    }
+
+                    scm {
+                        url = "https://github.com/sergei-lapin/napt"
+                    }
+                }
+            }
+        }
+
+        repositories {
+            maven {
+                if (!isRelease) {
+                    url("https://s01.oss.sonatype.org/content/repositories/snapshots/")
+                } else {
+                    url("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
+                }
+                credentials {
+                    setUsername(findProperty("osshrUsername"))
+                    setPassword(findProperty("osshrPassword"))
+                }
+            }
+        }
+    }
+
+    signing {
+        required { isRelease }
+        sign publishing.publications.maven
+    }
+}

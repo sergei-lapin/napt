@@ -4,7 +4,6 @@ import com.sun.tools.javac.util.Context;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import java.net.URLClassLoader;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -23,9 +22,17 @@ class ClassesProvider {
         final URLClassLoader classLoader = (URLClassLoader) context.get(JavaFileManager.class)
                 .getClassLoader(StandardLocation.CLASS_PATH);
 
+        final boolean isWindows = System.getProperty("os.name").toLowerCase().contains("win");
+
         try (final Stream<String> stream = Arrays.stream(classLoader.getURLs())
                 .filter(it -> !it.getFile().endsWith("jar"))
-                .map(URL::getFile)
+                .map(url -> {
+                    String file = url.getFile();
+                    if (isWindows) {
+                        file = file.replaceFirst("^/(.:/)", "$1");
+                    }
+                    return file;
+                })
                 .map(Paths::get)
                 .flatMap(ClassesProvider::walk)
                 .map(Path::toString)

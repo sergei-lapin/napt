@@ -1,12 +1,16 @@
 pluginManagement {
+    includeBuild("plugins")
     plugins {
-        id "com.sergei-lapin.napt" version "1.10"
+        id("com.sergei-lapin.napt") version "1.11"
     }
 }
 
 rootProject.name = "napt"
 
-include(":sample")
-include(":napt-javac")
+includeBuild("plugins") { build ->
+    build.dependencySubstitution { substitutions ->
+        substitutions.substitute(module("io.github.sergei-lapin.napt:javac:1.0-SNAPSHOT")).using(project(":javac"))
+    }
+}
 
-includeBuild("napt-gradle")
+include(":sample")
