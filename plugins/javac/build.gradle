@@ -27,6 +27,11 @@ task sourcesJar(type: Jar, dependsOn: classes) {
     from sourceSets.main.allSource
 }
 
+task javadocJar(type: Jar) {
+    archiveClassifier.set("javadoc")
+    from javadoc
+}
+
 afterEvaluate {
     publishing {
         publications {
@@ -36,6 +41,7 @@ afterEvaluate {
                 setArtifactId(project.name)
                 from(components.java)
                 artifact(sourcesJar)
+                artifact(javadocJar)
 
                 pom {
                     name = "Napt JavaC Plugin"
