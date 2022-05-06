@@ -12,7 +12,7 @@ repositories {
 }
 
 group = "com.sergei-lapin.napt"
-version = "1.12"
+version = "1.13"
 
 java {
     toolchain {

@@ -25,7 +25,7 @@ class NaptGradlePlugin : Plugin<Project> {
 
     private fun Project.insertCompilerPluginDependency() {
         val compilerPluginDependency = dependencies.create(CompilerPlugin)
-        configurations.whenObjectAdded { configuration ->
+        configurations.all { configuration ->
             if (configuration.name.contains(AnnotationProcessor, ignoreCase = true)) {
                 configuration.dependencies.add(compilerPluginDependency)
             }
