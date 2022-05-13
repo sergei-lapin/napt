@@ -53,8 +53,28 @@ class NaptGradlePlugin : Plugin<Project> {
     private fun Project.notifyJavaCompilerAboutPlugin() {
         tasks.withType(JavaCompile::class.java).configureEach { javaCompile ->
             javaCompile.options.compilerArgs.add("-Xplugin:Napt")
+            javaCompile.options.fork(
+                mapOf(
+                    "jvmArgs" to
+                        getJdkModuleOpensList(
+                            "jdk.compiler/com.sun.tools.javac.util",
+                            "jdk.compiler/com.sun.tools.javac.api",
+                            "jdk.compiler/com.sun.tools.javac.main",
+                        )
+                )
+            )
         }
     }
+
+    private fun getJdkModuleOpensList(vararg modulePackage: String): List<String> {
+        val result = mutableListOf<String>()
+        modulePackage.forEach { pkg ->
+            result.add("--add-opens")
+            result.add("$pkg=ALL-UNNAMED")
+        }
+        return result
+    }
+
     private fun Project.bindTriggerCleaning() {
         val cleanTrigger =
             tasks.register(

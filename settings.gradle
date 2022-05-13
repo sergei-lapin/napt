@@ -1,7 +1,7 @@
 pluginManagement {
     includeBuild("plugins")
     plugins {
-        id("com.sergei-lapin.napt") version "1.11"
+        id("com.sergei-lapin.napt") version "1.14"
     }
 }
 
@@ -9,7 +9,7 @@ rootProject.name = "napt"
 
 includeBuild("plugins") { build ->
     build.dependencySubstitution { substitutions ->
-        substitutions.substitute(module("io.github.sergei-lapin.napt:javac:1.0-SNAPSHOT")).using(project(":javac"))
+        substitutions.substitute(module("io.github.sergei-lapin.napt:javac:1.0")).using(project(":javac"))
     }
 }
 
