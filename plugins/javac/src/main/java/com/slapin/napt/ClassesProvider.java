@@ -34,6 +34,7 @@ class ClassesProvider {
                     return file;
                 })
                 .map(Paths::get)
+                .filter(Files::exists)
                 .flatMap(ClassesProvider::walk)
                 .map(Path::toString)
                 .filter(it -> it.endsWith(".class") && !it.contains("$"))
