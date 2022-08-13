@@ -30,7 +30,6 @@
             <option value="$PROJECT_DIR$/sample" />
           </set>
         </option>
-        <option name="resolveModulePerSourceSet" value="false" />
       </GradleProjectSettings>
     </option>
   </component>

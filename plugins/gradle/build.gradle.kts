@@ -1,28 +1,32 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 plugins {
     id("org.jetbrains.kotlin.jvm")
+    id("org.jetbrains.dokka")
     id("com.gradle.plugin-publish") version "1.0.0"
     id("java-gradle-plugin")
 }
 
-apply from: "../../buildscript/dependencies.gradle"
-
-repositories {
-    mavenCentral()
-    gradlePluginPortal()
-}
-
 group = "com.sergei-lapin.napt"
+
 version = "1.15"
 
-java {
-    toolchain {
-        languageVersion.set(JavaLanguageVersion.of(9))
-    }
+tasks.withType<KotlinCompile> { kotlinOptions.jvmTarget = "9" }
+
+tasks.withType<JavaCompile> {
+    sourceCompatibility = JavaVersion.VERSION_1_9.toString()
+    targetCompatibility = JavaVersion.VERSION_1_9.toString()
 }
 
+java { withJavadocJar() }
+
+tasks.named<Jar>("javadocJar") { from(tasks.named("dokkaJavadoc")) }
+
 dependencies {
-    implementation(deps.gradle.kotlin)
     implementation(gradleApi())
+    val kotlinVersion = "1.6.10"
+    compileOnly("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
+    dokkaHtmlPlugin("org.jetbrains.dokka:kotlin-as-java-plugin:$kotlinVersion")
 }
 
 gradlePlugin {
@@ -37,6 +41,6 @@ gradlePlugin {
 pluginBundle {
     website = "https://github.com/sergei-lapin/napt"
     vcsUrl = "https://github.com/sergei-lapin/napt.git"
-    tags = ["kotlin", "java", "apt", "kapt", "gradle", "plugin"]
+    tags = listOf("kotlin", "java", "apt", "kapt", "gradle", "plugin")
     description = "Plugin that enables the work of NAPT javac plugin"
 }
