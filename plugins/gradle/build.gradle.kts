@@ -18,7 +18,10 @@ tasks.withType<JavaCompile> {
     targetCompatibility = JavaVersion.VERSION_1_9.toString()
 }
 
-java { withJavadocJar() }
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
 
 tasks.named<Jar>("javadocJar") { from(tasks.named("dokkaJavadoc")) }
 
@@ -41,6 +44,6 @@ gradlePlugin {
 pluginBundle {
     website = "https://github.com/sergei-lapin/napt"
     vcsUrl = "https://github.com/sergei-lapin/napt.git"
-    tags = listOf("kotlin", "java", "apt", "kapt", "gradle", "plugin")
+    tags = listOf("kotlin", "java", "apt", "kapt", "annotation-processing")
     description = "Plugin that enables the work of NAPT javac plugin"
 }
