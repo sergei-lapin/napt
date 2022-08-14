@@ -105,3 +105,13 @@ package com.slapin.napt.sample;
 class NaptTrigger {
 }
 ```
+
+#### Disabling NaptTrigger generation
+
+`NaptTrigger.java` generation can be disabled (e.g. when you already have java sources in your module) by setting corresponding property to `false`:
+
+``` Gradle
+napt {
+    generateNaptTrigger.set(false)
+}
+```

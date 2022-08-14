@@ -33,15 +33,17 @@ class NaptGradlePlugin : Plugin<Project> {
     }
 
     private fun Project.bindTriggerCreation(extension: NaptGradleExtension) {
-
         val createTrigger =
             tasks.register(
                 "createNaptTrigger",
                 CreateNaptTrigger::class.java,
             ) { task ->
-                task.mainSourceSetDir.set(layout.projectDirectory.dir("src/main"))
+                task.mainSourceSetJavaDirPath.set(
+                    layout.projectDirectory.dir("src/main/java").asFile.path
+                )
                 task.projectName.set(name)
                 task.packagePrefix.set(extension.naptTriggerPackagePrefix)
+                task.onlyIf { extension.generateNaptTrigger.getOrElse(true) }
                 task.group = "napt"
                 task.description = "Creates NaptTrigger.java in order to trigger NAPT javac plugin"
             }
@@ -81,7 +83,9 @@ class NaptGradlePlugin : Plugin<Project> {
                 "cleanNaptTrigger",
                 CleanNaptTrigger::class.java,
             ) { task ->
-                task.mainSourceSetDir.set(layout.projectDirectory.dir("src/main"))
+                task.mainSourceSetJavaDirPath.set(
+                    layout.projectDirectory.dir("src/main/java").asFile.path
+                )
                 task.group = "napt"
                 task.description = "Removes NaptTrigger.java if present"
             }
