@@ -1,12 +1,17 @@
 @file:Suppress("UnstableApiUsage")
 
+import com.slapin.napt.JvmArgsStrongEncapsulation
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("com.sergei-lapin.napt")
 }
 
-napt { naptTriggerPackagePrefix.set("com.slapin.napt") }
+napt {
+    naptTriggerPackagePrefix.set("com.slapin.napt")
+    forkJvmArgs.set(listOf("-Dsome.prop=some-value") + JvmArgsStrongEncapsulation)
+}
 
 android {
     compileSdk = 30

@@ -16,11 +16,17 @@ class NaptGradlePlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
             val extension = extensions.create("napt", NaptGradleExtension::class.java)
+            extension.defineDefaults()
             insertCompilerPluginDependency()
             bindTriggerCreation(extension)
-            notifyJavaCompilerAboutPlugin()
+            notifyJavaCompilerAboutPlugin(extension)
             bindTriggerCleaning()
         }
+    }
+
+    private fun NaptGradleExtension.defineDefaults() {
+        generateNaptTrigger.convention(true)
+        forkJvmArgs.convention(JvmArgsStrongEncapsulation)
     }
 
     private fun Project.insertCompilerPluginDependency() {
@@ -43,7 +49,7 @@ class NaptGradlePlugin : Plugin<Project> {
                 )
                 task.projectName.set(name)
                 task.packagePrefix.set(extension.naptTriggerPackagePrefix)
-                task.onlyIf { extension.generateNaptTrigger.getOrElse(true) }
+                task.onlyIf { extension.generateNaptTrigger.get() }
                 task.group = "napt"
                 task.description = "Creates NaptTrigger.java in order to trigger NAPT javac plugin"
             }
@@ -52,29 +58,13 @@ class NaptGradlePlugin : Plugin<Project> {
         }
     }
 
-    private fun Project.notifyJavaCompilerAboutPlugin() {
+    private fun Project.notifyJavaCompilerAboutPlugin(extension: NaptGradleExtension) {
         tasks.withType(JavaCompile::class.java).configureEach { javaCompile ->
             javaCompile.options.compilerArgs.add("-Xplugin:Napt")
-            javaCompile.options.fork(
-                mapOf(
-                    "jvmArgs" to
-                        getJdkModuleOpensList(
-                            "jdk.compiler/com.sun.tools.javac.util",
-                            "jdk.compiler/com.sun.tools.javac.api",
-                            "jdk.compiler/com.sun.tools.javac.main",
-                        )
-                )
-            )
+            javaCompile.options.isFork = true
+            requireNotNull(javaCompile.options.forkOptions.jvmArgs)
+                .addAll(extension.forkJvmArgs.get())
         }
-    }
-
-    private fun getJdkModuleOpensList(vararg modulePackage: String): List<String> {
-        val result = mutableListOf<String>()
-        modulePackage.forEach { pkg ->
-            result.add("--add-opens")
-            result.add("$pkg=ALL-UNNAMED")
-        }
-        return result
     }
 
     private fun Project.bindTriggerCleaning() {
