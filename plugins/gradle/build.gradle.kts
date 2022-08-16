@@ -9,7 +9,7 @@ plugins {
 
 group = "com.sergei-lapin.napt"
 
-version = "1.15"
+version = "1.16"
 
 tasks.withType<KotlinCompile> { kotlinOptions.jvmTarget = "9" }
 
@@ -44,6 +44,6 @@ gradlePlugin {
 pluginBundle {
     website = "https://github.com/sergei-lapin/napt"
     vcsUrl = "https://github.com/sergei-lapin/napt.git"
-    tags = listOf("kotlin", "java", "apt", "kapt", "annotation-processing")
+    tags = listOf("kotlin", "java", "apt", "kapt")
     description = "Plugin that enables the work of NAPT javac plugin"
 }
