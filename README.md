@@ -11,9 +11,10 @@ An alternative to KAPT that skips stub generation and hence runs up to 50% faste
 
 *JDK 9+ is required to run this particular set of tools*
 
-Once applied, you cant reference generated code in Kotlin code anymore, so you'd have to write Java `bridge` classes in order to reference Java generated code in  Kotlin sources.
+Once applied, you can't reference generated code in Kotlin code anymore, so you'd have to write Java `bridge` classes in
+order to reference Java generated code in Kotlin sources.
 
-For example, assume we have following Kotlin Dagger 2 Component:
+For example, assume we have the following Kotlin Dagger 2 Component:
 
 ``` Kotlin
 @Component
@@ -27,7 +28,8 @@ interface Component {
 }
 ```
 
-then, in order to reference the generated component from Kotlin code we have to write Java `bridge` that would look like this:
+then, in order to reference the generated component from Kotlin code we have to write Java `bridge` that would look like
+this:
 
 ``` Java
 class ComponentBridge {
@@ -45,6 +47,7 @@ That's it, now you can easily reference this `bridge` from your Kotlin code wher
 You could see an example of usage in [sample](https://github.com/sergei-lapin/napt/blob/main/sample/build.gradle)
 
 ## Download
+
 - javac plugin is distributed through Maven Central
 - Gradle plugin is distributed through Gradle Plugin Portal
 
@@ -66,7 +69,7 @@ plugins {
 }
 ```
 
-then you can replace all of your 
+then you can replace all of your
 
 ``` Gradle
 dependencies {
@@ -82,7 +85,7 @@ dependencies {
 }
 ```
 
-That's it. Enjoy speed the speed up of your annotation processing by ~50%.
+That's it. Enjoy speed the speed-up of your annotation processing by ~50%.
 
 #### Ignore NaptTrigger
 
@@ -90,7 +93,8 @@ Add `NaptTrigger.java` to root `.gitignore`
 
 #### Conflitcting NaptTrigger classes
 
-By default Gradle plugin will generate NaptTrigger with module-named package so the FQ names won't clash, but, just in case, the prefix of NaptTrigger package can be specified like that:
+By default, Gradle plugin will generate NaptTrigger with module-named package so the FQ names won't clash, but, just in
+case, the prefix of NaptTrigger package can be specified like that:
 
 ``` Gradle
 napt {
@@ -108,10 +112,27 @@ class NaptTrigger {
 
 #### Disabling NaptTrigger generation
 
-`NaptTrigger.java` generation can be disabled (e.g. when you already have java sources in your module) by setting corresponding property to `false`:
+`NaptTrigger.java` generation can be disabled (e.g. when you already have java sources in your module) by setting
+corresponding property to `false`:
 
 ``` Gradle
 napt {
     generateNaptTrigger.set(false)
+}
+```
+
+#### Supplying custom JVM arguments to Java compiler
+
+In order for napt to work, Java compilation runs in forked process with arguments defined
+by `com.slapin.napt.JvmArgsStrongEncapsulation`. These arguments could be changed by setting corresponding property
+in `napt` extension.
+
+> **Warning**
+> When defining you own `forkJvmArgs` resulting value **must** be a superset
+> of `com.slapin.napt.JvmArgsStrongEncapsulation`
+
+``` Gradle
+napt {
+    forkJvmArgs.set(listOf("your_custom_arg") + JvmArgsStrongEncapsulation)
 }
 ```
