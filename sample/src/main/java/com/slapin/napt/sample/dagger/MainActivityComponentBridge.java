@@ -1,4 +1,5 @@
-package com.slapin.napt.sample;
+package com.slapin.napt.sample.dagger;
+
 
 class MainActivityComponentBridge {
 

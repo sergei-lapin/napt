@@ -6,6 +6,7 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("com.sergei-lapin.napt")
+    id("com.google.dagger.hilt.android") version "2.44"
 }
 
 napt {
@@ -13,9 +14,17 @@ napt {
     forkJvmArgs.set(listOf("-Dsome.prop=some-value") + JvmArgsStrongEncapsulation)
 }
 
+hilt {
+    enableAggregatingTask = false
+}
+
 android {
-    compileSdk = 30
+    compileSdk = 32
     buildToolsVersion = "30.0.3"
+
+    buildFeatures {
+        dataBinding = true
+    }
 
     defaultConfig {
         applicationId = "com.slapin.napt.sample"
@@ -38,12 +47,14 @@ android {
 androidComponents { beforeVariants { builder -> builder.enable = builder.name == "debug" } }
 
 dependencies {
-    implementation("androidx.core:core-ktx:1.3.2")
-    implementation("androidx.appcompat:appcompat:1.2.0")
-    implementation("androidx.constraintlayout:constraintlayout:2.0.4")
-    implementation("com.google.android.material:material:1.3.0")
+    implementation("androidx.core:core-ktx:1.8.0")
+    implementation("androidx.appcompat:appcompat:1.5.1")
+    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+    implementation("com.google.android.material:material:1.6.1")
 
-    val daggerVersion = "2.33"
+    val daggerVersion = "2.44"
     implementation("com.google.dagger:dagger:$daggerVersion")
+    implementation("com.google.dagger:hilt-android:$daggerVersion")
     annotationProcessor("com.google.dagger:dagger-compiler:$daggerVersion")
+    annotationProcessor("com.google.dagger:hilt-compiler:$daggerVersion")
 }

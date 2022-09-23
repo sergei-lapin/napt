@@ -1,39 +1,30 @@
 package com.slapin.napt.sample
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.os.Bundle
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import dagger.BindsInstance
-import dagger.Component
+import androidx.databinding.DataBindingUtil
+import com.slapin.napt.sample.dagger.MainActivityComponent
+import com.slapin.napt.sample.databinding.ActivityMainBinding
+import dagger.*
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
+import kotlin.random.Random
 
-@Component
-interface MainActivityComponent {
-
-    val activity: Activity
-
-    @Component.Factory
-    interface Factory {
-
-        fun create(@BindsInstance activity: Activity): MainActivityComponent
-    }
-
-    companion object {
-
-        fun factory(): Factory = MainActivityComponentBridge.factory()
-    }
-}
-
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
+
+    @Inject lateinit var stringProvider: StringProvider
 
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        val textView = findViewById<TextView>(R.id.text)
-        val component = MainActivityComponent.factory().create(this);
-        textView.text = "Created dagger component $component from Kotlin sources without using KAPT!!!\n" +
-                "Providing ${component.activity} from it"
+        val binding: ActivityMainBinding =
+            DataBindingUtil.setContentView(this, R.layout.activity_main)
+        val component = MainActivityComponent.factory().create(Random.nextInt())
+        binding.labelText =
+            "Created dagger component $component from Kotlin sources without using KAPT!!!\n" +
+                "Providing ${component.int} from it.\n" +
+                "String from hilt code ${stringProvider.get()}."
     }
 }
