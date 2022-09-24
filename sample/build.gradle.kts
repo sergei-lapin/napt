@@ -19,8 +19,8 @@ hilt {
 }
 
 android {
-    compileSdk = 32
-    buildToolsVersion = "30.0.3"
+    compileSdk = 33
+    namespace = "com.slapin.napt.sample"
 
     buildFeatures {
         dataBinding = true
@@ -29,7 +29,7 @@ android {
     defaultConfig {
         applicationId = "com.slapin.napt.sample"
         minSdk = 21
-        targetSdk = 30
+        targetSdk = 33
         versionCode = 1
         versionName = "1.0"
 
@@ -37,17 +37,17 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
 
-    kotlinOptions { jvmTarget = JavaVersion.VERSION_1_8.toString() }
+    kotlinOptions.jvmTarget = JavaVersion.VERSION_11.toString()
 }
 
 androidComponents { beforeVariants { builder -> builder.enable = builder.name == "debug" } }
 
 dependencies {
-    implementation("androidx.core:core-ktx:1.8.0")
+    implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.appcompat:appcompat:1.5.1")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("com.google.android.material:material:1.6.1")
