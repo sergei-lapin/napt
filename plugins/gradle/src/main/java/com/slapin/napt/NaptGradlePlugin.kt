@@ -1,5 +1,6 @@
 package com.slapin.napt
 
+import com.android.build.gradle.AppExtension
 import com.android.build.gradle.BaseExtension
 import com.android.build.gradle.internal.TaskManager
 import com.slapin.napt.task.CreateNaptTrigger
@@ -24,8 +25,8 @@ class NaptGradlePlugin : Plugin<Project> {
     with(target) {
       val extension = extensions.create("napt", NaptGradleExtension::class.java, objects)
       insertCompilerPluginDependency()
-      bindTriggerCreation(extension)
       notifyJavaCompilerAboutPlugin(extension)
+      afterEvaluate { bindTriggerCreation(extension) }
     }
   }
 
@@ -40,38 +41,36 @@ class NaptGradlePlugin : Plugin<Project> {
 
   private fun Project.bindTriggerCreation(extension: NaptGradleExtension) {
     if (!extension.generateNaptTrigger.get()) return
-    afterEvaluate {
-      extensions.findByType(BaseExtension::class.java)?.sourceSets?.configureEach { sourceSet ->
-        if (isNaptTriggerGenerationRequired(sourceSet.name, extension)) {
-          val triggerDir = naptTriggerDirForSourceSet(sourceSet.name)
-          val createTrigger =
-            registerCreateTriggerTaskForSourceSet(
-              sourceSetName = sourceSet.name,
-              triggerDir = triggerDir,
-              extension = extension,
-            )
-          registerTriggerDirInIdea(triggerDir.get().asFile)
-          sourceSet.java.srcDir(triggerDir.get().asFile)
-          // setting srcDirs on AndroidSourceDirectorySet doesn't act the same way as with
-          // java SourceSet (task action is not performed during provider resolving somehow)
-          // so, we have to manually wire trigger generation to some early build stage
-          tasks.named(TaskManager.MAIN_PREBUILD).configure { preBuild ->
-            preBuild.dependsOn(createTrigger)
-          }
+    extensions.findByType(AppExtension::class.java)?.sourceSets?.configureEach { sourceSet ->
+      if (isNaptTriggerGenerationRequired(sourceSet.name, extension)) {
+        val triggerDir = naptTriggerDirForSourceSet(sourceSet.name)
+        val createTrigger =
+          registerCreateTriggerTaskForSourceSet(
+            sourceSetName = sourceSet.name,
+            triggerDir = triggerDir,
+            extension = extension,
+          )
+        registerTriggerDirInIdea(triggerDir.get().asFile)
+        sourceSet.java.srcDir(createTrigger.flatMap { it.triggerDir })
+        // setting srcDirs on AndroidSourceDirectorySet doesn't act the same way as with
+        // java SourceSet (task action is not performed during provider resolving somehow)
+        // so, we have to manually wire trigger generation to some early build stage
+        tasks.named(TaskManager.MAIN_PREBUILD).configure { preBuild ->
+          preBuild.dependsOn(createTrigger)
         }
       }
-      extensions.findByType(SourceSetContainer::class.java)?.configureEach { sourceSet ->
-        if (isNaptTriggerGenerationRequired(sourceSet.name, extension)) {
-          val triggerDir = naptTriggerDirForSourceSet(sourceSet.name)
-          val createTrigger =
-            registerCreateTriggerTaskForSourceSet(
-              sourceSetName = sourceSet.name,
-              triggerDir = triggerDir,
-              extension = extension,
-            )
-          registerTriggerDirInIdea(triggerDir.get().asFile)
-          sourceSet.java.srcDir(createTrigger.flatMap { it.triggerDir })
-        }
+    }
+    extensions.findByType(SourceSetContainer::class.java)?.configureEach { sourceSet ->
+      if (isNaptTriggerGenerationRequired(sourceSet.name, extension)) {
+        val triggerDir = naptTriggerDirForSourceSet(sourceSet.name)
+        val createTrigger =
+          registerCreateTriggerTaskForSourceSet(
+            sourceSetName = sourceSet.name,
+            triggerDir = triggerDir,
+            extension = extension,
+          )
+        registerTriggerDirInIdea(triggerDir.get().asFile)
+        sourceSet.java.srcDir(createTrigger.flatMap { it.triggerDir })
       }
     }
   }
