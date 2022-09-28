@@ -1,6 +1,5 @@
 package com.slapin.napt
 
-import com.android.build.gradle.AppExtension
 import com.android.build.gradle.BaseExtension
 import com.android.build.gradle.internal.TaskManager
 import com.slapin.napt.task.CreateNaptTrigger
