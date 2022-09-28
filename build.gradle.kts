@@ -1,3 +1,1 @@
-plugins {
-    id("com.android.application") apply false
-}
+plugins { id("com.android.application") apply false }

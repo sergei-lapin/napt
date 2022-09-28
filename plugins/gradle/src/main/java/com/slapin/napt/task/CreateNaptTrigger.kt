@@ -12,30 +12,31 @@ import org.gradle.work.DisableCachingByDefault
 @DisableCachingByDefault(because = "Not worth caching")
 abstract class CreateNaptTrigger : DefaultTask() {
 
-    @get:Input abstract val projectName: Property<String>
+  @get:Input abstract val projectName: Property<String>
 
-    @get:Input @get:Optional abstract val packagePrefix: Property<String>
+  @get:Input @get:Optional abstract val packagePrefix: Property<String>
 
-    @get:OutputDirectory abstract val triggerDir: DirectoryProperty
+  @get:OutputDirectory abstract val triggerDir: DirectoryProperty
 
-    @TaskAction
-    fun run() {
-        val packageName = getPackageName()
-        val triggerCode =
-            """
+  @TaskAction
+  fun run() {
+    val packageName = getPackageName()
+    val triggerCode =
+      """
             package $packageName;
             
             class NaptTrigger {}
-            """.trimIndent()
-        val outputFile =
-            triggerDir.get().asFile.resolve("${packageName.replace('.', '/')}/NaptTrigger.java")
-        outputFile.parentFile?.mkdirs()
-        outputFile.writeText(triggerCode)
-    }
+            """.trimIndent(
+      )
+    val outputFile =
+      triggerDir.get().asFile.resolve("${packageName.replace('.', '/')}/NaptTrigger.java")
+    outputFile.parentFile?.mkdirs()
+    outputFile.writeText(triggerCode)
+  }
 
-    private fun getPackageName(): String {
-        val packagePrefix = packagePrefix.orNull?.let { "$it." }.orEmpty()
-        val projectName = projectName.get().replace("-", "_")
-        return "$packagePrefix$projectName"
-    }
+  private fun getPackageName(): String {
+    val packagePrefix = packagePrefix.orNull?.let { "$it." }.orEmpty()
+    val projectName = projectName.get().replace("-", "_")
+    return "$packagePrefix$projectName"
+  }
 }

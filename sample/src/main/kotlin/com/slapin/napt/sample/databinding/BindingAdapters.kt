@@ -5,5 +5,5 @@ import androidx.databinding.BindingAdapter
 
 @BindingAdapter("app:customText")
 fun TextView.setTextCustom(text: String) {
-    this.text = "$text\n(suffix from custom binding adapter)"
+  this.text = "$text\n(suffix from custom binding adapter)"
 }

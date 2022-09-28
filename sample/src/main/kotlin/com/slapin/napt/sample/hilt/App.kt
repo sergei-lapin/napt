@@ -9,10 +9,10 @@ import javax.inject.Inject
 @HiltAndroidApp
 class App : Application() {
 
-    @Inject lateinit var stringProvider: StringProvider
+  @Inject lateinit var stringProvider: StringProvider
 
-    override fun onCreate() {
-        super.onCreate()
-        Log.d("NaptSample", stringProvider.get())
-    }
+  override fun onCreate() {
+    super.onCreate()
+    Log.d("NaptSample", stringProvider.get())
+  }
 }
