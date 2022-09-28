@@ -1,6 +1,6 @@
 # NAPT
 
-[![Plugin](https://img.shields.io/badge/gradle%20plugin-v1.16-blue)](https://plugins.gradle.org/plugin/com.sergei-lapin.napt)
+[![Plugin](https://img.shields.io/badge/gradle%20plugin-v1.17-blue)](https://plugins.gradle.org/plugin/com.sergei-lapin.napt)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ## What is it?
@@ -86,10 +86,6 @@ dependencies {
 ```
 
 That's it. Enjoy speed the speed-up of your annotation processing by ~50%.
-
-#### Ignore NaptTrigger
-
-Add `NaptTrigger.java` to root `.gitignore`
 
 #### Conflitcting NaptTrigger classes
 

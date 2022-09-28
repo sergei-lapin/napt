@@ -9,7 +9,7 @@ plugins {
 
 group = "com.sergei-lapin.napt"
 
-version = "1.16"
+version = "1.17"
 
 tasks.withType<KotlinCompile> { kotlinOptions.jvmTarget = "9" }
 
@@ -28,6 +28,7 @@ tasks.named<Jar>("javadocJar") { from(tasks.named("dokkaJavadoc")) }
 dependencies {
     implementation(gradleApi())
     val kotlinVersion = "1.6.10"
+    compileOnly("com.android.tools.build:gradle:7.3.0")
     compileOnly("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
     dokkaHtmlPlugin("org.jetbrains.dokka:kotlin-as-java-plugin:$kotlinVersion")
 }
