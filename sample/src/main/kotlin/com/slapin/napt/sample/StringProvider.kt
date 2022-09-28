@@ -5,10 +5,10 @@ import javax.inject.Inject
 
 interface StringProvider {
 
-    fun get(): String
+  fun get(): String
 }
 
 class StringProviderImpl @Inject constructor() : StringProvider {
 
-    override fun get(): String = UUID.randomUUID().toString()
+  override fun get(): String = UUID.randomUUID().toString()
 }

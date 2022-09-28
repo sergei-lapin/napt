@@ -1,0 +1,12 @@
+[versions]
+dagger = "2.44"
+
+[libraries]
+androidXCoreKtx = "androidx.core:core-ktx:1.8.0"
+androidXAppcompat = "androidx.appcompat:appcompat:1.5.1"
+androidXConstraintlayout = "androidx.constraintlayout:constraintlayout:2.1.4"
+googleMaterial = "com.google.android.material:material:1.6.1"
+dagger = { module = "com.google.dagger:dagger", version.ref = "dagger" }
+hiltAndroid = { module = "com.google.dagger:hilt-android", version.ref = "dagger" }
+daggerCompiler = { module = "com.google.dagger:dagger-compiler", version.ref = "dagger" }
+hiltCompiler = { module = "com.google.dagger:hilt-compiler", version.ref = "dagger" }

@@ -1,30 +1,25 @@
 @file:Suppress("UnstableApiUsage")
 
-import com.slapin.napt.JvmArgsStrongEncapsulation
-
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("com.sergei-lapin.napt")
-    id("com.google.dagger.hilt.android") version "2.44"
+    id("com.google.dagger.hilt.android") version libs.versions.dagger.get()
 }
 
 napt {
     naptTriggerPackagePrefix.set("com.slapin.napt")
-    forkJvmArgs.set(listOf("-Dsome.prop=some-value") + JvmArgsStrongEncapsulation)
+    forkJvmArgs.set(listOf("-Dsome.prop=some-value"))
+    additionalSourceSetsForTriggerGeneration.set(setOf("test", "androidTest"))
 }
 
-hilt {
-    enableAggregatingTask = false
-}
+hilt { enableAggregatingTask = false }
 
 android {
     compileSdk = 33
     namespace = "com.slapin.napt.sample"
 
-    buildFeatures {
-        dataBinding = true
-    }
+    buildFeatures { dataBinding = true }
 
     defaultConfig {
         applicationId = "com.slapin.napt.sample"
@@ -47,14 +42,13 @@ android {
 androidComponents { beforeVariants { builder -> builder.enable = builder.name == "debug" } }
 
 dependencies {
-    implementation("androidx.core:core-ktx:1.9.0")
-    implementation("androidx.appcompat:appcompat:1.5.1")
-    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-    implementation("com.google.android.material:material:1.6.1")
+    implementation(libs.androidXCoreKtx)
+    implementation(libs.androidXAppcompat)
+    implementation(libs.androidXConstraintlayout)
+    implementation(libs.googleMaterial)
 
-    val daggerVersion = "2.44"
-    implementation("com.google.dagger:dagger:$daggerVersion")
-    implementation("com.google.dagger:hilt-android:$daggerVersion")
-    annotationProcessor("com.google.dagger:dagger-compiler:$daggerVersion")
-    annotationProcessor("com.google.dagger:hilt-compiler:$daggerVersion")
+    implementation(libs.dagger)
+    implementation(libs.hiltAndroid)
+    annotationProcessor(libs.daggerCompiler)
+    annotationProcessor(libs.hiltCompiler)
 }
