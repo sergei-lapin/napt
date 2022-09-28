@@ -26,7 +26,7 @@ class NaptGradlePlugin : Plugin<Project> {
       val extension = extensions.create("napt", NaptGradleExtension::class.java, objects)
       insertCompilerPluginDependency()
       notifyJavaCompilerAboutPlugin(extension)
-      afterEvaluate { bindTriggerCreation(extension) }
+      bindTriggerCreation(extension)
     }
   }
 
@@ -40,43 +40,38 @@ class NaptGradlePlugin : Plugin<Project> {
   }
 
   private fun Project.bindTriggerCreation(extension: NaptGradleExtension) {
-    if (!extension.generateNaptTrigger.get()) return
-    extensions.findByType(AppExtension::class.java)?.sourceSets?.configureEach { sourceSet ->
-      if (isNaptTriggerGenerationRequired(sourceSet.name, extension)) {
-        val triggerDir = naptTriggerDirForSourceSet(sourceSet.name)
-        val createTrigger =
-          registerCreateTriggerTaskForSourceSet(
-            sourceSetName = sourceSet.name,
-            triggerDir = triggerDir,
-            extension = extension,
-          )
-        registerTriggerDirInIdea(triggerDir.get().asFile)
-        sourceSet.java.srcDir(createTrigger.flatMap { it.triggerDir })
-        // setting srcDirs on AndroidSourceDirectorySet doesn't act the same way as with
-        // java SourceSet (task action is not performed during provider resolving somehow)
-        // so, we have to manually wire trigger generation to some early build stage
-        tasks.named(TaskManager.MAIN_PREBUILD).configure { preBuild ->
-          preBuild.dependsOn(createTrigger)
-        }
+    extensions.findByType(BaseExtension::class.java)?.sourceSets?.configureEach { sourceSet ->
+      val triggerDir = naptTriggerDirForSourceSet(sourceSet.name)
+      val createTrigger =
+        registerCreateTriggerTaskForSourceSet(
+          sourceSetName = sourceSet.name,
+          triggerDir = triggerDir,
+          extension = extension,
+        )
+      registerTriggerDirInIdea(triggerDir.get().asFile)
+      sourceSet.java.srcDirs(createTrigger.flatMap(CreateNaptTrigger::triggerDir))
+      // setting srcDirs on AndroidSourceDirectorySet doesn't act the same way as with
+      // java SourceSet (task action is not performed during provider resolving somehow)
+      // so, we have to manually wire trigger generation to some early build stage
+      tasks.named(TaskManager.MAIN_PREBUILD).configure { preBuild ->
+        preBuild.dependsOn(createTrigger)
       }
     }
     extensions.findByType(SourceSetContainer::class.java)?.configureEach { sourceSet ->
-      if (isNaptTriggerGenerationRequired(sourceSet.name, extension)) {
-        val triggerDir = naptTriggerDirForSourceSet(sourceSet.name)
-        val createTrigger =
-          registerCreateTriggerTaskForSourceSet(
-            sourceSetName = sourceSet.name,
-            triggerDir = triggerDir,
-            extension = extension,
-          )
-        registerTriggerDirInIdea(triggerDir.get().asFile)
-        sourceSet.java.srcDir(createTrigger.flatMap { it.triggerDir })
-      }
+      val triggerDir = naptTriggerDirForSourceSet(sourceSet.name)
+      val createTrigger =
+        registerCreateTriggerTaskForSourceSet(
+          sourceSetName = sourceSet.name,
+          triggerDir = triggerDir,
+          extension = extension,
+        )
+      registerTriggerDirInIdea(triggerDir.get().asFile)
+      sourceSet.java.srcDir(createTrigger.flatMap(CreateNaptTrigger::triggerDir))
     }
   }
 
   private fun Project.naptTriggerDirForSourceSet(sourceSetName: String): Provider<Directory> =
-    layout.buildDirectory.dir("generated/napt_trigger/$sourceSetName/out")
+    layout.buildDirectory.dir("generated/source/napt_trigger/$sourceSetName")
 
   private fun Project.registerCreateTriggerTaskForSourceSet(
     sourceSetName: String,
@@ -100,6 +95,10 @@ class NaptGradlePlugin : Plugin<Project> {
           }
         }
       )
+      task.onlyIf {
+        isNaptTriggerGenerationRequired(sourceSetName, extension) &&
+          extension.generateNaptTrigger.get()
+      }
       task.group = "napt"
       task.description =
         "Creates NaptTrigger.java for $sourceSetName source set in order to trigger java compilation"
