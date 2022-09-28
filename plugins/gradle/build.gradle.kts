@@ -27,7 +27,7 @@ tasks.named<Jar>("javadocJar") { from(tasks.named("dokkaJavadoc")) }
 
 dependencies {
     implementation(gradleApi())
-    val kotlinVersion = "1.6.10"
+    val kotlinVersion = "1.7.10"
     compileOnly("com.android.tools.build:gradle:7.3.0")
     compileOnly("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
     dokkaHtmlPlugin("org.jetbrains.dokka:kotlin-as-java-plugin:$kotlinVersion")
