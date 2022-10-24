@@ -132,3 +132,15 @@ napt {
     forkJvmArgs.set(listOf("your_custom_arg") + JvmArgsStrongEncapsulation)
 }
 ```
+
+#### Generating NaptTrigger within additional subsets
+
+Sometimes you might need to trigger annotation processing in additional source sets (e.g. `test`).
+In such cases you can use corresponding property from `napt` extension:
+
+``` Gradle
+napt {
+    additionalSourceSetsForTriggerGeneration.set(listOf("test"))
+}
+```
+
