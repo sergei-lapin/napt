@@ -133,7 +133,7 @@ napt {
 }
 ```
 
-#### Generating NaptTrigger within additional subsets
+#### Generating NaptTrigger within additional source sets
 
 Sometimes you might need to trigger annotation processing in additional source sets (e.g. `test`).
 In such cases you can use corresponding property from `napt` extension:
