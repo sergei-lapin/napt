@@ -1,6 +1,6 @@
 # NAPT
 
-[![Plugin](https://img.shields.io/badge/gradle%20plugin-v1.17-blue)](https://plugins.gradle.org/plugin/com.sergei-lapin.napt)
+[![Plugin](https://img.shields.io/badge/gradle%20plugin-v1.18-blue)](https://plugins.gradle.org/plugin/com.sergei-lapin.napt)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ## What is it?
@@ -19,10 +19,10 @@ For example, assume we have the following Kotlin Dagger 2 Component:
 ``` Kotlin
 @Component
 interface Component {
-    
+
     @Component.Factory
     interface Factory {
-        
+
         fun create(): Component
     }
 }
@@ -33,7 +33,7 @@ this:
 
 ``` Java
 class ComponentBridge {
-    
+
     static Component.Factory factory() {
         return DaggerComponent.factory();
     }
@@ -55,7 +55,7 @@ You could see an example of usage in [sample](https://github.com/sergei-lapin/na
 
 Remove your old
 
-``` Gradle 
+``` Gradle
 plugins {
     kotlin("kapt")
 }
@@ -120,16 +120,12 @@ napt {
 #### Supplying custom JVM arguments to Java compiler
 
 In order for napt to work, Java compilation runs in forked process with arguments defined
-by `com.slapin.napt.JvmArgsStrongEncapsulation`. These arguments could be changed by setting corresponding property
+by `com.slapin.napt.JvmArgsStrongEncapsulation`. These arguments could be extended by setting corresponding property
 in `napt` extension.
-
-> **Warning**
-> When defining you own `forkJvmArgs` resulting value **must** be a superset
-> of `com.slapin.napt.JvmArgsStrongEncapsulation`
 
 ``` Gradle
 napt {
-    forkJvmArgs.set(listOf("your_custom_arg") + JvmArgsStrongEncapsulation)
+    forkJvmArgs.set(listOf("your_custom_arg"))
 }
 ```
 
