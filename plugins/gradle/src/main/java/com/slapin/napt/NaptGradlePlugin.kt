@@ -7,14 +7,18 @@ import java.io.File
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.file.Directory
+import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Provider
+import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.SourceSetContainer
 import org.gradle.api.tasks.TaskProvider
 import org.gradle.api.tasks.compile.JavaCompile
 import org.gradle.plugins.ide.idea.GenerateIdeaModule
 import org.gradle.plugins.ide.idea.model.IdeaModel
+import org.gradle.process.CommandLineArgumentProvider
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-private const val CompilerPlugin = "io.github.sergei-lapin.napt:javac:1.1"
+private const val CompilerPlugin = "io.github.sergei-lapin.napt:javac:1.2"
 private const val AnnotationProcessor = "annotationProcessor"
 private const val MainSourceSet = "main"
 
@@ -125,11 +129,49 @@ class NaptGradlePlugin : Plugin<Project> {
       sourceSetName in extension.additionalSourceSetsForTriggerGeneration.get()
 
   private fun Project.notifyJavaCompilerAboutPlugin(extension: NaptGradleExtension) {
+    val rootProjectDir = rootDir
     tasks.withType(JavaCompile::class.java).configureEach { javaCompile ->
+      javaCompile.options.compilerArgumentProviders.add(
+        NaptCompilerArgumentsProvider(
+          kotlinClassesDirPath =
+            tasks
+              .withType(KotlinCompile::class.java)
+              .named(javaCompile.name.replace("JavaWithJavac", "Kotlin").replace("Java", "Kotlin"))
+              .flatMap(KotlinCompile::destinationDirectory)
+              .map { directory -> directory.asFile.relativeTo(rootProjectDir).path }
+        )
+      )
       javaCompile.options.compilerArgs.add("-Xplugin:Napt")
       javaCompile.options.isFork = true
-      requireNotNull(javaCompile.options.forkOptions.jvmArgs)
-        .addAll((extension.forkJvmArgs.get() + JvmArgsStrongEncapsulation).toSet())
+      @Suppress("UnstableApiUsage")
+      javaCompile.options.forkOptions.jvmArgumentProviders.add(
+        NaptForkOptionsJvmArgumentsProvider(
+          forkJvmArgs = extension.forkJvmArgs,
+          jvmArgsStrongEncapsulation =
+            objects.listProperty(String::class.java).convention(JvmArgsStrongEncapsulation),
+        )
+      )
     }
+  }
+}
+
+private class NaptCompilerArgumentsProvider(
+  @get:Input val kotlinClassesDirPath: Provider<String>,
+) : CommandLineArgumentProvider {
+
+  override fun asArguments(): Iterable<String> {
+    return listOf(
+      "-Xplugin:Napt",
+      "-XDKotlinClassesDir=${File(kotlinClassesDirPath.get())}",
+    )
+  }
+}
+
+private class NaptForkOptionsJvmArgumentsProvider(
+  @get:Input val forkJvmArgs: ListProperty<String>,
+  @get:Input val jvmArgsStrongEncapsulation: ListProperty<String>,
+) : CommandLineArgumentProvider {
+  override fun asArguments(): Iterable<String> {
+    return (forkJvmArgs.get() + jvmArgsStrongEncapsulation.get()).toSet()
   }
 }
