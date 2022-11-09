@@ -9,7 +9,7 @@ plugins {
 
 group = "com.sergei-lapin.napt"
 
-version = "1.17"
+version = "1.18"
 
 tasks.withType<KotlinCompile> { kotlinOptions.jvmTarget = "9" }
 

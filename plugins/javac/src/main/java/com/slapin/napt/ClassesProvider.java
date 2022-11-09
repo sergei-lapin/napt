@@ -1,6 +1,7 @@
 package com.slapin.napt;
 
 import com.sun.tools.javac.util.Context;
+import com.sun.tools.javac.util.Options;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,10 +23,12 @@ class ClassesProvider {
         final URLClassLoader classLoader = (URLClassLoader) context.get(JavaFileManager.class)
                 .getClassLoader(StandardLocation.CLASS_PATH);
 
+        final String kotlinClassesDir = Options.instance(context).get("KotlinClassesDir");
+
         final boolean isWindows = System.getProperty("os.name").toLowerCase().contains("win");
 
         try (final Stream<String> stream = Arrays.stream(classLoader.getURLs())
-                .filter(it -> !it.getFile().endsWith("jar"))
+                .filter(it -> !it.getFile().endsWith("jar") && it.getFile().contains(kotlinClassesDir))
                 .map(url -> {
                     String file = url.getFile();
                     if (isWindows) {
