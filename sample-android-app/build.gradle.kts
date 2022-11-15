@@ -42,6 +42,8 @@ android {
 androidComponents { beforeVariants { builder -> builder.enable = builder.name == "debug" } }
 
 dependencies {
+  implementation(project(":sample-kotlin-lib"))
+
   implementation(libs.androidXCoreKtx)
   implementation(libs.androidXAppcompat)
   implementation(libs.androidXConstraintlayout)
