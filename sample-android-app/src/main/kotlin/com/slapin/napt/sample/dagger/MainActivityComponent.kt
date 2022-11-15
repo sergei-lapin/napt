@@ -1,9 +1,10 @@
 package com.slapin.napt.sample.dagger
 
+import com.slapin.napt.sample.LongProviderModule
 import dagger.BindsInstance
 import dagger.Component
 
-@Component
+@Component(modules = [LongProviderModule::class])
 interface MainActivityComponent {
 
   val int: Int
