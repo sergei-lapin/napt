@@ -2,6 +2,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
   id("org.jetbrains.kotlin.jvm")
+  id("com.squareup.anvil") version "2.4.2"
   id("com.sergei-lapin.napt")
 }
 
