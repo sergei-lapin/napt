@@ -4,7 +4,7 @@ plugins {
   id("com.android.application")
   id("org.jetbrains.kotlin.android")
   id("com.sergei-lapin.napt")
-  id("com.google.dagger.hilt.android") version libs.versions.dagger.get()
+  id("com.google.dagger.hilt.android")
 }
 
 napt {
@@ -35,14 +35,16 @@ android {
     sourceCompatibility = JavaVersion.VERSION_11
     targetCompatibility = JavaVersion.VERSION_11
   }
+}
 
-  kotlinOptions.jvmTarget = JavaVersion.VERSION_11.toString()
+kotlin {
+  jvmToolchain(11)
 }
 
 androidComponents { beforeVariants { builder -> builder.enable = builder.name == "debug" } }
 
 dependencies {
-  implementation(project(":sample-kotlin-lib"))
+  implementation(projects.sampleKotlinLib)
 
   implementation(libs.androidXCoreKtx)
   implementation(libs.androidXAppcompat)

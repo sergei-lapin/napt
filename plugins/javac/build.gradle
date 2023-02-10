@@ -4,14 +4,11 @@ plugins {
     id("signing")
 }
 
-group = "io.github.sergei-lapin.napt"
-version = "1.2"
-
 ext.isRelease = !version.endsWith("SNAPSHOT")
 
 tasks.withType(JavaCompile) {
-    sourceCompatibility = JavaVersion.VERSION_1_9.toString()
-    targetCompatibility = JavaVersion.VERSION_1_9.toString()
+    sourceCompatibility = JavaVersion.VERSION_11.toString()
+    targetCompatibility = JavaVersion.VERSION_11.toString()
     modularity.inferModulePath.set(true)
     options.compilerArgs = [
             "--add-exports", "jdk.compiler/com.sun.tools.javac.util=com.slapin.napt",
