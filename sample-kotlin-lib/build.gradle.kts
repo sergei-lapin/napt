@@ -1,22 +1,18 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 plugins {
   id("org.jetbrains.kotlin.jvm")
   id("com.sergei-lapin.napt")
+  id("com.google.devtools.ksp")
 }
 
-val jvmTarget = JavaVersion.VERSION_11.toString()
-
-tasks.withType<KotlinCompile> {
-  kotlinOptions.jvmTarget = jvmTarget
-}
-
-tasks.withType<JavaCompile> {
-  sourceCompatibility = jvmTarget
-  targetCompatibility = jvmTarget
+kotlin {
+  jvmToolchain(11)
 }
 
 dependencies {
   implementation(libs.dagger)
   annotationProcessor(libs.daggerCompiler)
+
+  api(libs.moshi)
+  ksp(libs.moshi.codegen)
+  // The issue will only show up once you have some ksp processor on the config
 }

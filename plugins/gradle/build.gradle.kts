@@ -3,19 +3,17 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
   id("org.jetbrains.kotlin.jvm")
   id("org.jetbrains.dokka")
-  id("com.gradle.plugin-publish") version "1.0.0"
+  id("com.gradle.plugin-publish")
   id("java-gradle-plugin")
 }
 
-group = "com.sergei-lapin.napt"
-
-version = "1.19"
-
-tasks.withType<KotlinCompile> { kotlinOptions.jvmTarget = "9" }
+kotlin {
+  jvmToolchain(11)
+}
 
 tasks.withType<JavaCompile> {
-  sourceCompatibility = JavaVersion.VERSION_1_9.toString()
-  targetCompatibility = JavaVersion.VERSION_1_9.toString()
+  sourceCompatibility = JavaVersion.VERSION_11.toString()
+  targetCompatibility = JavaVersion.VERSION_11.toString()
 }
 
 java {
@@ -27,8 +25,8 @@ tasks.named<Jar>("javadocJar") { from(tasks.named("dokkaJavadoc")) }
 
 dependencies {
   implementation(gradleApi())
-  val kotlinVersion = "1.7.10"
-  compileOnly("com.android.tools.build:gradle:7.2.0")
+  val kotlinVersion = libs.versions.kotlin.get()
+  compileOnly("com.android.tools.build:gradle:${libs.versions.agp.get()}")
   compileOnly("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
   dokkaHtmlPlugin("org.jetbrains.dokka:kotlin-as-java-plugin:$kotlinVersion")
 }
